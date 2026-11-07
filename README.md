@@ -14,16 +14,18 @@ It redraws whenever the context fill or a rate-limit window moves. It is a port 
 
 ## Install
 
-At the prompt of a Claude Code terminal session:
+In the Claude desktop app: open **Customize**, choose **Add marketplace** and enter `a1ecbr0wn/status-band`, then add **Status band** from **+ → Plugins → Add plugin** and start a new local session.
+
+At the prompt of a Claude Code terminal session, after `/plugin marketplace add a1ecbr0wn/status-band`:
 
 ```
-/plugin install status-band --marketplace a1ecbr0wn/status-band
+/plugin install status-band@a1ecbr0wn-plugins
 ```
 
 Answer `y` to add the marketplace, then choose a scope. From a shell:
 
 ```
-claude plugin install status-band --marketplace a1ecbr0wn/status-band
+claude plugin install status-band@a1ecbr0wn-plugins
 ```
 
 ## Requirements

@@ -1,7 +1,10 @@
 {
   "name": "status-band",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Phosphor-coloured status strip above the prompt: model, host, folder, version, context and rate-limit meters.",
+  "hooks": [
+    "./hooks/band.json"
+  ],
   "types": "./types/index.d.ts",
   "author": {
     "name": "a1ecbr0wn"

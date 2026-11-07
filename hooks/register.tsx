@@ -43,8 +43,12 @@ const toUsage = (u: { context: { percent?: number }; rateLimits: { kind: string;
 async function setup($: EngineInterface) {
   const h = await $.process.run(['hostname', '-s']).catch(() => undefined)
   await update($, host, () => (h?.exitCode === 0 ? h.stdout.trim() : ''))
-  const v = (await $.session.version()).version
+  const v = await $.session.version().then(r => r.version).catch(() => '')
   await update($, version, () => v)
+  await refresh($)
+}
+
+async function refresh($: EngineInterface) {
   const u = await $.session.usage().catch(() => undefined)
   if (u) await update($, usage, () => toUsage(u))
 }
@@ -53,13 +57,13 @@ export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await setup($).catch(() => undefined)
     return next(e)
-  })
+  }).catch(($, e, next) => next(e))
 
-  // Fires when the context fill, a rate-limit window or the cost moves: the write redraws the band.
-  on('session.measure', async ($, e, next) => {
-    await update($, usage, () => toUsage(e))
+  // After each main turn the context fill and rate limits have moved: the write redraws the band.
+  on('turn.complete', async ($, e, next) => {
+    if (e.agentId === undefined) await refresh($)
     return next(e)
-  })
+  }).catch(($, e, next) => next(e))
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
     if (e.props.hasSurvey) return next(e)
@@ -100,5 +104,5 @@ export const register: Register = on => {
       </Box>
     )
     return below ? <Box flexDirection="column">{mine}{below}</Box> : mine
-  })
+  }).catch(($, e, next) => next(e))
 }

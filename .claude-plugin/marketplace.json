@@ -1,0 +1,15 @@
+{
+  "name": "status-band",
+  "owner": {
+    "name": "a1ecbr0wn"
+  },
+  "metadata": {
+    "description": "A Phosphor-coloured status strip band for Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "status-band",
+      "source": "./"
+    }
+  ]
+}

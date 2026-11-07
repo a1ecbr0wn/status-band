@@ -1,0 +1,11 @@
+{
+  "name": "status-band",
+  "version": "0.1.0",
+  "description": "A Phosphor-coloured status strip above the prompt: model, host, folder, version, context and rate-limit meters.",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "a1ecbr0wn"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/a1ecbr0wn/status-band"
+}

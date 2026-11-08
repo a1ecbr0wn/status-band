@@ -3,7 +3,7 @@
 A Claude Code band: a two-line status strip drawn above the prompt, in the Phosphor palette.
 
 ```
-[Opus 5.5] | 🖥  host | 📁 project | v2.1.319
+[Opus 5.5]   |   🖥  host   |   📁 project   |   v2.1.319
 ctx:▓▓▓▓░░░░░░42% | 5h:▓░░░░░░░░░15% 14:30 | 7d:▓▓▓▓▓▓▓▓▓░99% Nov 9, 08:00
 ```
 

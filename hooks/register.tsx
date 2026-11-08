@@ -21,6 +21,18 @@ const C = {
 const BAR_WIDTH = 10
 const filledCells = (pct: number) => Math.max(0, Math.min(BAR_WIDTH, Math.floor((pct * BAR_WIDTH) / 100)))
 
+// "claude-opus-5-5" → "Opus 5.5": the family capitalised, version numbers joined by dots.
+// Also takes a date or context suffix ("-20251001", "[1m]") and the older order ("claude-3-5-sonnet").
+export const modelName = (id: string) => {
+  const parts = id.trim().replace(/\[.*\]$/, '').replace(/-\d{8}$/, '').split('-')
+  if (parts[0] !== 'claude' || parts.length < 2) return id
+  const words = parts.slice(1).filter(p => !/^\d+$/.test(p))
+  const version = parts.slice(1).filter(p => /^\d+$/.test(p)).join('.')
+  if (words.length === 0) return id
+  const family = words.map(w => w[0]!.toUpperCase() + w.slice(1)).join(' ')
+  return version === '' ? family : `${family} ${version}`
+}
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const two = (n: number) => String(n).padStart(2, '0')
 const hhmm = (d: Date) => `${two(d.getHours())}:${two(d.getMinutes())}`
@@ -71,11 +83,13 @@ export const register: Register = on => {
     const below = await next(e).catch(() => undefined)
 
     const u = await read($, usage)
-    const model = await $.session.model().catch(() => '')
+    const model = modelName(await $.session.model().catch(() => ''))
     const dir = (await $.session.cwd()).replace(/[\\/]+$/, '').split(/[\\/]/).pop() ?? ''
     const { Box, Text } = $.ui.resolve(e)
 
     const sep = <Text color={C.dim}> | </Text>
+    // The top line is looser: its items are short and read better apart.
+    const wideSep = <Text color={C.dim}>{'   |   '}</Text>
     const meter = (label: string, pct: number, reset = '') => {
       const filled = filledCells(pct)
       return (
@@ -91,7 +105,7 @@ export const register: Register = on => {
     const mine = (
       <Box flexDirection="column">
         <Text color={C.text} wrap="truncate-end">
-          [<Text color={C.blue}>{model}</Text>]{sep}🖥  {await read($, host)}{sep}📁 {dir}{sep}
+          [<Text color={C.blue}>{model}</Text>]{wideSep}🖥  {await read($, host)}{wideSep}📁 {dir}{wideSep}
           <Text color={C.yellow}>v{await read($, version)}</Text>
         </Text>
         <Box flexDirection="row">

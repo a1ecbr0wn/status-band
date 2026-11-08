@@ -1,5 +1,18 @@
 import { expect, test } from 'claude-code/testing'
 
+import { modelName } from '../hooks/register'
+
+test('model ids read as their names', () => {
+  expect(modelName('claude-opus-5-5')).toBe('Opus 5.5')
+  expect(modelName('claude-sonnet-5-5[1m]')).toBe('Sonnet 5.5')
+  expect(modelName('claude-haiku-4-5-20251001')).toBe('Haiku 4.5')
+  expect(modelName('claude-fable-5-1')).toBe('Fable 5.1')
+  expect(modelName('claude-opus-5')).toBe('Opus 5')
+  expect(modelName('claude-3-5-sonnet-20241022')).toBe('Sonnet 3.5')
+  expect(modelName('Opus 5.5')).toBe('Opus 5.5')
+  expect(modelName('')).toBe('')
+})
+
 const BAND = {
   plugin: 'status-band',
   component: 'AbovePrompt',
@@ -8,7 +21,7 @@ const BAND = {
 
 for (const surface of ['terminal', 'desktop'] as const) {
 test(`the band shows model, folder and the three meters on ${surface}`, async ($, on) => {
-  on('session.model', () => ({ value: 'Opus' }) as never)
+  on('session.model', () => ({ value: 'claude-opus-5-5' }) as never)
   on('session.cwd', () => ({ value: '/home/me/scripts' }) as never)
   on('session.usage', () =>
     ({
@@ -26,7 +39,9 @@ test(`the band shows model, folder and the three meters on ${surface}`, async ($
   await $.session.start({ cwd: '/home/me/scripts', surface: 'terminal', isInteractive: true } as never)
 
   const ui = await $.ui.mount({ ...BAND, surface })
-  expect((await ui.find({ type: 'Text', text: /Opus/ }))?.text).toContain('📁 scripts')
+  const top = (await ui.find({ type: 'Text', text: /Opus/ }))?.text
+  expect(top).toContain('[Opus 5.5]   |   🖥')
+  expect(top).toContain('   |   📁 scripts   |   v')
   expect((await ui.find({ type: 'Text', text: /^ctx:/ }))?.text).toBe('ctx:▓▓▓▓░░░░░░42%')
   expect((await ui.find({ type: 'Text', text: /^5h:/ }))?.text).toBe('5h:▓░░░░░░░░░15%')
   expect((await ui.find({ type: 'Text', text: /^7d:/ }))?.text).toBe('7d:▓▓▓▓▓▓▓▓▓░99%')

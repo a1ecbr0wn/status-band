@@ -1,12 +1,13 @@
 # status-band
 
-A Claude Code band: a two-line status strip drawn above the prompt, in the Phosphor palette.
+A Claude Code band: a status strip of two lines (plus a green rule on the terminal) drawn above the prompt, in the Phosphor palette.
 
 ```
 [Opus 5.5]   |   🖥  host   |   📁 project   |   v2.1.319
 ctx:▓▓▓▓░░░░░░42% | 5h:▓░░░░░░░░░15% 14:30 | 7d:▓▓▓▓▓▓▓▓▓░99% Nov 9, 08:00
 ```
 
+- **Rule (terminal only):** a green `─` line across the top of the band.
 - **Line 1:** the session's model, the machine's short hostname, the working folder and the Claude Code version.
 - **Line 2:** how full the context window is, and the 5-hour and 7-day rate-limit windows with the time each resets. The rate-limit meters only fill on a Claude subscription.
 
@@ -38,10 +39,12 @@ claude plugin install status-band@a1ecbr0wn-plugins
 
 | Part | Colour |
 |---|---|
+| Band background | `#000A00` |
 | Body text | `#E8E8E8` |
 | Labels, separators, reset times | `#A0A0A0` |
 | Meter fill | `#1AFF12` |
 | Meter track | `#00B300` |
+| Terminal rule (top of band) | `#1AFF12` |
 | Model | `#00C8FF` |
 | Version | `#FFEA00` |
 

@@ -45,6 +45,8 @@ test(`the band shows model, folder and the three meters on ${surface}`, async ($
   expect((await ui.find({ type: 'Text', text: /^ctx:/ }))?.text).toBe('ctx:▓▓▓▓░░░░░░42%')
   expect((await ui.find({ type: 'Text', text: /^5h:/ }))?.text).toBe('5h:▓░░░░░░░░░15%')
   expect((await ui.find({ type: 'Text', text: /^7d:/ }))?.text).toBe('7d:▓▓▓▓▓▓▓▓▓░99%')
+  const rule = (await ui.find({ type: 'Text', text: /^─+$/ }))?.text
+  expect(rule).toBe(surface === 'terminal' ? '─'.repeat(100) : undefined)
   await ui.unmount()
 })
 }

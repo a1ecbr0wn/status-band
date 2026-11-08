@@ -8,8 +8,10 @@ const usage = atom({ plugin: 'status-band', key: 'usage' } as const, EMPTY)
 const host = atom({ plugin: 'status-band', key: 'host' } as const, '')
 const version = atom({ plugin: 'status-band', key: 'version' } as const, '')
 
-// Phosphor palette (Rio terminal theme): neutral body text, green for meters, ANSI accents.
+// Phosphor palette (Rio terminal theme): near-black green background, neutral body text,
+// green for meters and the terminal rule, ANSI accents.
 const C = {
+  bg: '#000A00',
   text: '#E8E8E8',
   dim: '#A0A0A0',
   green: '#1AFF12',
@@ -103,7 +105,9 @@ export const register: Register = on => {
     }
 
     const mine = (
-      <Box flexDirection="column">
+      <Box flexDirection="column" backgroundColor={C.bg}>
+        {/* The terminal draws a green rule across the top of the band. */}
+        {e.surface === 'terminal' && <Text color={C.green} wrap="truncate-end">{'─'.repeat(e.props.bodyColumns)}</Text>}
         <Text color={C.text} wrap="truncate-end">
           [<Text color={C.blue}>{model}</Text>]{wideSep}🖥  {await read($, host)}{wideSep}📁 {dir}{wideSep}
           <Text color={C.yellow}>v{await read($, version)}</Text>

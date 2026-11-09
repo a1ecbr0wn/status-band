@@ -2,13 +2,16 @@
 
 A Claude Code status bar: a strip of two lines drawn above the prompt, in the Phosphor palette.
 
-```
-[Opus 5.5] | 🖥  host | 📁 project |  main !?⇡ | v2.1.319
-ctx:▓▓▓▓░░░░░░42% | 5h:▓░░░░░░░░░15% 14:30 | 7d:▓▓▓▓▓▓▓▓▓░99% Nov 9, 08:00
-```
+In the terminal, with a green line across the top:
+
+![The status bar in a Claude Code terminal session](docs/terminal.png)
+
+In the Claude desktop app, with a rounded green outline:
+
+![The status bar in the Claude desktop app](docs/desktop.png)
 
 - **Top edge:** in the terminal a green `─` line across the top; in the desktop app a rounded green outline round the whole strip.
-- **Line 1:** the session's model, the machine's short hostname, the working folder, the git branch with its status symbols and the Claude Code version.
+- **Line 1:** the session's model, the computer's short name, the project (the working folder), the git branch with its status symbols and the Claude Code version.
 - **Line 2:** how full the context window is, and the 5-hour and 7-day rate-limit windows with the time each resets. The rate-limit meters only fill on a Claude subscription.
 
 The git segment follows [starship](https://starship.rs)'s `git_status`. It shows the branch (the short hash when detached) and, in this order, whichever of these apply, and nothing outside a repository:
@@ -30,9 +33,9 @@ It redraws whenever the context fill, a rate-limit window or the git status chan
 
 ## Install
 
-In the Claude desktop app: open **Customize**, choose **Add marketplace** and enter `a1ecbr0wn/status-band`, then add **Phosphor status** from **+ → Plugins → Add plugin** and start a new local session.
+In the Claude desktop app: open **Customize**, choose **Add marketplace** and enter `a1ecbr0wn/statusbar`, then add **Phosphor status** from **+ → Plugins → Add plugin** and start a new local session.
 
-At the prompt of a Claude Code terminal session, after `/plugin marketplace add a1ecbr0wn/status-band`:
+At the prompt of a Claude Code terminal session, after `/plugin marketplace add a1ecbr0wn/statusbar`:
 
 ```
 /plugin install phosphor-status@statusbar

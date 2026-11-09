@@ -3,7 +3,7 @@
 A Claude Code status bar: a strip of two lines drawn above the prompt, in the Phosphor palette.
 
 ```
-[Opus 5.5]   |   🖥  host   |   📁 project   |    main !?⇡   |   v2.1.319
+[Opus 5.5] | 🖥  host | 📁 project |  main !?⇡ | v2.1.319
 ctx:▓▓▓▓░░░░░░42% | 5h:▓░░░░░░░░░15% 14:30 | 7d:▓▓▓▓▓▓▓▓▓░99% Nov 9, 08:00
 ```
 
@@ -24,7 +24,7 @@ The git segment follows [starship](https://starship.rs)'s `git_status`. It shows
 | `?` | untracked files |
 | `⇡` `⇣` `⇕` | ahead of, behind or diverged from the upstream |
 
-Everything is drawn in a monospaced font, so the meters and the git symbols line up in the desktop app too. The branch glyph is a Nerd Font character, so use a Nerd Font in your terminal.
+Everything is drawn in a monospaced font, so the meters and the git symbols line up in the desktop app too. The branch symbol is starship's Nerd Font glyph in the terminal (use a Nerd Font there) and the leafless tree emoji (🪾, Unicode 16) in the desktop app, whose font has no Nerd Font glyphs. An operating system older than late 2024 may not draw that emoji.
 
 It redraws whenever the context fill, a rate-limit window or the git status changes. The git status is read at the same moments: when a session starts and after each main-agent turn. It is a port of a `statusLine` shell script to a mod, so it needs no `jq` and runs no script per refresh.
 
@@ -61,8 +61,7 @@ claude plugin install phosphor-status@statusbar
 | Meter fill | `#1AFF12` |
 | Meter track | `#00B300` |
 | Top line (terminal) and outline (desktop) | `#1AFF12` |
-| Git branch | `#FF14C8` |
-| Git status symbols | `#FF1414` |
+| Git branch and status symbols | `#1AFF12` |
 | Model | `#00C8FF` |
 | Version | `#FFEA00` |
 

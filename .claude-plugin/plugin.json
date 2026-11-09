@@ -1,6 +1,6 @@
 {
   "name": "phosphor-status",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Phosphor-coloured status strip above the prompt: model, host, folder, git branch, version, context and rate-limit meters.",
   "hooks": [
     "./hooks/band.json"

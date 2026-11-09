@@ -11,8 +11,8 @@ const version = atom({ plugin: 'phosphor-status', key: 'version' } as const, '')
 const git = atom({ plugin: 'phosphor-status', key: 'git' } as const, NO_GIT)
 
 // Phosphor palette (Rio terminal theme): near-black green background, neutral body text,
-// green for meters, the terminal rule and the desktop outline, ANSI accents (magenta for the
-// git branch and red for its status symbols, as starship colours them).
+// green for meters, the terminal rule, the desktop outline and the git branch and status (as
+// starship draws them, in ANSI green), and ANSI accents for the model and version.
 const C = {
   bg: '#000A00',
   text: '#E8E8E8',
@@ -21,12 +21,13 @@ const C = {
   track: '#00B300',
   blue: '#00C8FF',
   yellow: '#FFEA00',
-  magenta: '#FF14C8',
-  red: '#FF1414',
 } as const
 
-// Starship's branch symbol (a Nerd Font glyph), written as an escape so it survives editors.
+// The branch symbol. The terminal draws starship's (a Nerd Font glyph, written as an escape so it
+// survives editors); the desktop app's monospaced font has no Nerd Font glyphs, so it gets the
+// leafless tree emoji (Unicode 16, U+1FABE), which an OS older than late 2024 may not draw.
 const BRANCH = '\ue0a0'
+const BRANCH_DESKTOP = '\u{1FABE}'
 
 const BAR_WIDTH = 10
 const filledCells = (pct: number) => Math.max(0, Math.min(BAR_WIDTH, Math.floor((pct * BAR_WIDTH) / 100)))
@@ -150,8 +151,6 @@ export const register: Register = on => {
     // Every Text is `mono` so the desktop app aligns the meters and the git glyphs in its
     // monospaced face (the terminal is always monospaced and ignores it).
     const sep = <Text mono color={C.dim}> | </Text>
-    // The top line is looser: its items are short and read better apart.
-    const wideSep = <Text mono color={C.dim}>{'   |   '}</Text>
     const meter = (label: string, pct: number, reset = '') => {
       const filled = filledCells(pct)
       return (
@@ -169,8 +168,8 @@ export const register: Register = on => {
     const branch =
       g.branch === '' ? null : (
         <Text mono>
-          <Text mono color={C.magenta}>{`${BRANCH} ${g.branch}`}</Text>
-          {g.flags === '' ? '' : <Text mono color={C.red}> {g.flags}</Text>}
+          <Text mono color={C.green}>{`${e.surface === 'terminal' ? BRANCH : BRANCH_DESKTOP} ${g.branch}`}</Text>
+          {g.flags === '' ? '' : <Text mono color={C.green}> {g.flags}</Text>}
         </Text>
       )
 
@@ -183,8 +182,8 @@ export const register: Register = on => {
         {/* The terminal draws a green rule across the top of the band. */}
         {e.surface === 'terminal' && <Text mono color={C.green} wrap="truncate-end">{'─'.repeat(e.props.bodyColumns)}</Text>}
         <Text mono color={C.text} wrap="truncate-end">
-          [<Text mono color={C.blue}>{model}</Text>]{wideSep}🖥  {await read($, host)}{wideSep}📁 {dir}{wideSep}
-          {branch}{branch === null ? null : wideSep}
+          [<Text mono color={C.blue}>{model}</Text>]{sep}🖥  {await read($, host)}{sep}📁 {dir}{sep}
+          {branch}{branch === null ? null : sep}
           <Text mono color={C.yellow}>v{await read($, version)}</Text>
         </Text>
         <Box flexDirection="row">

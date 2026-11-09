@@ -72,8 +72,10 @@ test(`the band shows model, folder and the three meters on ${surface}`, async ($
 
   const ui = await $.ui.mount({ ...STRIP, surface })
   const top = (await ui.find({ type: 'Text', text: /Opus/ }))?.text
-  expect(top).toContain('[Opus 5.5]   |   🖥')
-  expect(top).toContain('   |   📁 scripts   |    main !?⇡   |   v')
+  // The terminal draws starship's Nerd Font glyph, the desktop app the leafless tree emoji.
+  const symbol = surface === 'terminal' ? '\ue0a0' : '\u{1FABE}'
+  expect(top).toContain('[Opus 5.5] | 🖥')
+  expect(top).toContain(` | 📁 scripts | ${symbol} main !?⇡ | v`)
   expect((await ui.find({ type: 'Text', text: /^ctx:/ }))?.text).toBe('ctx:▓▓▓▓░░░░░░42%')
   expect((await ui.find({ type: 'Text', text: /^5h:/ }))?.text).toBe('5h:▓░░░░░░░░░15%')
   expect((await ui.find({ type: 'Text', text: /^7d:/ }))?.text).toBe('7d:▓▓▓▓▓▓▓▓▓░99%')

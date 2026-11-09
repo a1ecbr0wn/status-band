@@ -1,14 +1,14 @@
 {
-  "name": "a1ecbr0wn-plugins",
+  "name": "statusbar",
   "owner": {
     "name": "a1ecbr0wn"
   },
   "metadata": {
-    "description": "A Phosphor-coloured status strip band for Claude Code."
+    "description": "A Phosphor-coloured status strip for Claude Code."
   },
   "plugins": [
     {
-      "name": "status-band",
+      "name": "phosphor-status",
       "source": "./"
     }
   ]

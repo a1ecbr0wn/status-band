@@ -1,5 +1,5 @@
 {
-  "name": "status-band",
+  "name": "phosphor-status",
   "version": "0.2.3",
   "description": "A Phosphor-coloured status strip above the prompt: model, host, folder, version, context and rate-limit meters.",
   "hooks": [

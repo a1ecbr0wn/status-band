@@ -13,8 +13,8 @@ test('model ids read as their names', () => {
   expect(modelName('')).toBe('')
 })
 
-const BAND = {
-  plugin: 'status-band',
+const STRIP = {
+  plugin: 'phosphor-status',
   component: 'AbovePrompt',
   props: { hasSurvey: false, isWorking: false, maxRows: 12, bodyColumns: 100, scroll: { offset: 0, bodyRows: 12 }, view: {} },
 } as const
@@ -38,7 +38,7 @@ test(`the band shows model, folder and the three meters on ${surface}`, async ($
   on('session.start', (_, e) => ({ cwd: e.cwd }) as never)
   await $.session.start({ cwd: '/home/me/scripts', surface: 'terminal', isInteractive: true } as never)
 
-  const ui = await $.ui.mount({ ...BAND, surface })
+  const ui = await $.ui.mount({ ...STRIP, surface })
   const top = (await ui.find({ type: 'Text', text: /Opus/ }))?.text
   expect(top).toContain('[Opus 5.5]   |   🖥')
   expect(top).toContain('   |   📁 scripts   |   v')
@@ -47,6 +47,11 @@ test(`the band shows model, folder and the three meters on ${surface}`, async ($
   expect((await ui.find({ type: 'Text', text: /^7d:/ }))?.text).toBe('7d:▓▓▓▓▓▓▓▓▓░99%')
   const rule = (await ui.find({ type: 'Text', text: /^─+$/ }))?.text
   expect(rule).toBe(surface === 'terminal' ? '─'.repeat(100) : undefined)
+  // The desktop app gets a rounded green outline; the terminal draws the rule instead.
+  const box = (await ui.find({ type: 'Box' }))?.props
+  expect(box?.backgroundColor).toBe('#000A00')
+  expect(box?.borderStyle).toBe(surface === 'terminal' ? undefined : 'round')
+  expect(box?.borderColor).toBe(surface === 'terminal' ? undefined : '#1AFF12')
   await ui.unmount()
 })
 }

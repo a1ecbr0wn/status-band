@@ -4,12 +4,12 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { Limit, Usage } from '../types'
 
 const EMPTY: Usage = { ctx: 0, five: { pct: 0 }, seven: { pct: 0 } }
-const usage = atom({ plugin: 'status-band', key: 'usage' } as const, EMPTY)
-const host = atom({ plugin: 'status-band', key: 'host' } as const, '')
-const version = atom({ plugin: 'status-band', key: 'version' } as const, '')
+const usage = atom({ plugin: 'phosphor-status', key: 'usage' } as const, EMPTY)
+const host = atom({ plugin: 'phosphor-status', key: 'host' } as const, '')
+const version = atom({ plugin: 'phosphor-status', key: 'version' } as const, '')
 
 // Phosphor palette (Rio terminal theme): near-black green background, neutral body text,
-// green for meters and the terminal rule, ANSI accents.
+// green for meters, the terminal rule and the desktop outline, ANSI accents.
 const C = {
   bg: '#000A00',
   text: '#E8E8E8',
@@ -104,8 +104,12 @@ export const register: Register = on => {
       )
     }
 
+    // The terminal gets a rule across the top; the desktop app, where a rule looks out of place,
+    // gets a rounded green outline instead.
+    const outline = e.surface === 'terminal' ? {} : { borderStyle: 'round' as const, borderColor: C.green }
+
     const mine = (
-      <Box flexDirection="column" backgroundColor={C.bg}>
+      <Box flexDirection="column" backgroundColor={C.bg} {...outline}>
         {/* The terminal draws a green rule across the top of the band. */}
         {e.surface === 'terminal' && <Text color={C.green} wrap="truncate-end">{'─'.repeat(e.props.bodyColumns)}</Text>}
         <Text color={C.text} wrap="truncate-end">
